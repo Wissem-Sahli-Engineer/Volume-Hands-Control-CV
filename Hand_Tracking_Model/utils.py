@@ -9,12 +9,12 @@ import time
 
 # custom styles
 custom_dots = drawing_utils.DrawingSpec(color=(255, 0, 0),
-                                        thickness=5, 
+                                        thickness=2, 
                                         circle_radius=4
                                         )
 
-custom_lines = drawing_utils.DrawingSpec(color=(0, 255, 0), 
-                                        thickness=5
+custom_lines = drawing_utils.DrawingSpec(color=(183,81,93), 
+                                        thickness=2
                                         )
 
 class handDetector():
@@ -71,33 +71,20 @@ class handDetector():
 
                 if len(all_hands) != 0:
                     cx , cy = hand[draw_finger][1],hand[draw_finger][2]
-                    img = cv2.circle(img, (cx,cy),25,(201,97,48),cv2.FILLED)
+                    img = cv2.circle(img, (cx,cy),15,(201,97,48),cv2.FILLED)
         
         if coor_finger != -1 :
             i=1
             fingerList = []
 
-            for hand in all_hands :
-                if len(all_hands) != 0:
+            if len(all_hands) != 0:
+                for hand in all_hands :
                     cx , cy = hand[coor_finger][1],hand[coor_finger][2]
                     fingerList.append(['Hand '+str(i),cx,cy])
                     i += 1
+            else:
+                fingerList.append([])
+    
             return fingerList
         
         return all_hands
-
-# init " pTime = time.time() " before the While loop
-def get_fps(cap, pTime,type='default'):
-    if type == "default":
-        cTime = time.time()
-        fps = 1/(cTime - pTime)
-        pTime = cTime
-        return fps, pTime
-
-    elif type =="cap":
-        fps= cap.get(cv2.CAP_PROP_FPS)
-        if fps<= 0:
-            return 30, pTime
-        return fps, pTime
-    else:
-        return 30, pTime
